@@ -8,7 +8,8 @@
 
 #import "MainVController.h"
 #import "DetailChooseViewController.h"
-@interface MainVController ()<UITableViewDelegate,UITableViewDataSource,DetailChooseDelegate>{
+#import "ChooseProView.h"
+@interface MainVController ()<UITableViewDelegate,UITableViewDataSource,DetailChooseDelegate,ChooseProViewDelegate>{
     NSIndexPath *saveIndexPath;
     NSInteger index;
 }
@@ -20,6 +21,9 @@
 @property(nonatomic, strong) UIButton *showBtn;
 
 @property(nonatomic, strong) NSArray *detailArr;
+//显示选中的职业显示
+@property(nonatomic, strong) ChooseProView *proView;
+@property(nonatomic, strong) NSMutableArray *forChange;
 @end
 
 @implementation MainVController
@@ -70,14 +74,23 @@
     }
     return _detailArr;
 }
+-(ChooseProView*)proView{
+    if (!_proView) {
+        _proView = [[ChooseProView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
+        _proView.proDelegate = self;
+    }
+    return _proView;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = @"选择职业";
     self.edgesForExtendedLayout = UIRectEdgeNone;
     [self.view addSubview:self.tableView];
-    [self.view addSubview:self.showView];
+    //[self.view addSubview:self.showView];
+    [self.view addSubview:self.proView];
     index = 0;
+    self.forChange = [[NSMutableArray alloc]init];
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.dataArr.count;
@@ -103,18 +116,32 @@
     [self.navigationController pushViewController:dvc animated:YES];
 }
 -(void)detailChooseDidSelectRow:(NSIndexPath *)indexPath{
-    index = index+1;
+    //index = index+1;
     NSString *profession = [[NSString alloc]init];
     profession = [[self.detailArr objectAtIndex:saveIndexPath.row] objectAtIndex:indexPath.row];
-   
-    self.showBtn = [[UIButton alloc]initWithFrame:CGRectMake(60*index+10*(index+1), 0, 60, 20)];
-    self.showBtn.titleLabel.font = [UIFont fontWithName:@"Arial" size:12];
-    [self.showBtn setBackgroundImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
-    [self.showBtn setTitle:profession forState:UIControlStateNormal];
-    [self.showBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [self.showBtn setTag:index];
-    [self.showBtn addTarget:self action:@selector(deleteBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [self.showView addSubview:self.showBtn];
+    self.proView.cellTitle = profession;
+    
+    [self.forChange addObject:profession];
+    self.proView.titleArr = self.forChange;
+    //[self.proView.titleArr addObject:@"123"];
+    NSLog(@"%d",self.proView.titleArr.count);
+    for (UICollectionView *view in self.proView.subviews) {
+        if ([view isKindOfClass:[UICollectionView class]]) {
+            [view reloadData];
+        }
+    }
+    //[self.proView.subviews objectAtIndex:0]
+//    self.showBtn = [[UIButton alloc]initWithFrame:CGRectMake(60*index+10*(index+1), 0, 60, 20)];
+//    self.showBtn.titleLabel.font = [UIFont fontWithName:@"Arial" size:12];
+//    [self.showBtn setBackgroundImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
+//    [self.showBtn setTitle:profession forState:UIControlStateNormal];
+//    [self.showBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    [self.showBtn setTag:index];
+//    [self.showBtn addTarget:self action:@selector(deleteBtn:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.showView addSubview:self.showBtn];
+}
+-(void)ChooseProViewRelodedata:(UICollectionView *)collectionView{
+
 }
 -(void)deleteBtn:(UIButton *)sender{
     UIButton *btn = (UIButton *)[self.showView viewWithTag:sender.tag];

@@ -18,6 +18,7 @@
 		2F0413FE1D54632E007B2502 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F0413FC1D54632E007B2502 /* cancel.png */; };
 		2F0413FF1D54632E007B2502 /* confir.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F0413FD1D54632E007B2502 /* confir.png */; };
 		2F0414031D547BFD007B2502 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F0414021D547BFD007B2502 /* delete.png */; };
+		2F0414061D548602007B2502 /* ChooseProView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F0414051D548602007B2502 /* ChooseProView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,8 @@
 		2F0413FC1D54632E007B2502 /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel.png; sourceTree = "<group>"; };
 		2F0413FD1D54632E007B2502 /* confir.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = confir.png; sourceTree = "<group>"; };
 		2F0414021D547BFD007B2502 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
+		2F0414041D548602007B2502 /* ChooseProView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseProView.h; sourceTree = "<group>"; };
+		2F0414051D548602007B2502 /* ChooseProView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseProView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +80,8 @@
 				2F0413E11D54224B007B2502 /* AppDelegate.m */,
 				2F0413F41D542268007B2502 /* MainVController.h */,
 				2F0413F51D542268007B2502 /* MainVController.m */,
+				2F0414041D548602007B2502 /* ChooseProView.h */,
+				2F0414051D548602007B2502 /* ChooseProView.m */,
 				2F0413F71D543167007B2502 /* DetailChooseViewController.h */,
 				2F0413F81D543167007B2502 /* DetailChooseViewController.m */,
 				2F0413E61D54224B007B2502 /* Main.storyboard */,
@@ -173,6 +178,7 @@
 				2F0413F61D542268007B2502 /* MainVController.m in Sources */,
 				2F0413E21D54224B007B2502 /* AppDelegate.m in Sources */,
 				2F0413F91D543167007B2502 /* DetailChooseViewController.m in Sources */,
+				2F0414061D548602007B2502 /* ChooseProView.m in Sources */,
 				2F0413DF1D54224B007B2502 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
