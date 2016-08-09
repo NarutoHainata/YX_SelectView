@@ -7,24 +7,32 @@
 //
 
 #import "DetailChooseViewController.h"
-
+#import "DataModel.h"
 @interface DetailChooseViewController ()<UITableViewDelegate,UITableViewDataSource>{
     NSIndexPath *previousIndexPath;
+    NSInteger recordRow;
+    NSIndexPath *current;
 }
 @property (nonatomic, strong) UITableView *detailTableView;
 @property (nonatomic, strong) UIImageView *imageView;
+
+@property (nonatomic, strong) DataModel *model;
+@property (nonatomic, strong) NSMutableArray *saveModel;
 @end
 
 @implementation DetailChooseViewController
 - (UITableView *)detailTableView {
     if (!_detailTableView) {
+        
         _detailTableView = [[UITableView alloc]initWithFrame:self.view.bounds style:UITableViewStylePlain];
         _detailTableView.delegate = self;
         _detailTableView.dataSource = self;
         _detailTableView.rowHeight = 45;
+        
     }
     return _detailTableView;
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -47,7 +55,14 @@
     UIBarButtonItem *rightBtnItem = [[UIBarButtonItem alloc]initWithCustomView:rightBtn];
     self.navigationItem.rightBarButtonItem = rightBtnItem;
 
-    
+    self.saveModel = [[NSMutableArray alloc]init];
+    previousIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    for (int i = 0; i<self.professionArr.count; i++) {
+        DataModel *model = [[DataModel alloc]init];
+        model.title = [self.professionArr objectAtIndex:i];
+        [self.saveModel addObject:model];
+    }
+   
 }
 -(void)leftBtnClick{
     
@@ -70,34 +85,43 @@
     return 1;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    NSString *cellId = [NSString stringWithFormat:@"cell%ld%ld",(long)indexPath.row,(long)indexPath.section];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
-    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     cell.textLabel.text = [self.professionArr objectAtIndex:indexPath.row];
-    self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(self.detailTableView.frame.size.width-40, 0, 40, self.detailTableView.rowHeight)];
-    self.imageView.image = [UIImage imageNamed:@"select"];
-    //_imageView.hidden = YES;
-    cell.accessoryView = self.imageView;
-    if (!(indexPath.section == 0 && indexPath.row == 0)) {
-        cell.accessoryView.hidden = YES;
-        previousIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    
+      if (indexPath.row == self.model.selected && self.model.sele == YES) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }else{
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-  
-    if (indexPath != previousIndexPath) {
-        UITableViewCell *selectCell = [tableView cellForRowAtIndexPath:indexPath];
-        selectCell.accessoryView.hidden = NO;
-        UITableViewCell *Cell = [tableView cellForRowAtIndexPath:previousIndexPath];
-        Cell.accessoryView.hidden = YES;
-        previousIndexPath = indexPath;
+    
+    for (int i = 0; i<self.professionArr.count; i++) {
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
+    UITableViewCell *selectCell = [tableView cellForRowAtIndexPath:indexPath];
+    selectCell.accessoryType = UITableViewCellAccessoryCheckmark;
+    self.model = [self.saveModel objectAtIndex:indexPath.row];
+    self.model.sele = YES;
+    self.model.selected = indexPath.row;
+    [self.detailTableView reloadData];
+    
 }
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
 
+//    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//    
+//    cell.accessoryType = UITableViewCellAccessoryNone;
+    
+
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
